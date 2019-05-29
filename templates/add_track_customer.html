@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block con %}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <form action="" method="post" novalidate>
+                    {% csrf_token %}
+                    {% for customer in customer_list %}
+                        <div class="form-group">
+                            <label>{{ customer.label }}</label>
+                            {{ customer }}
+                            <span style='color: red;'>{{ customer.errors.0 }}</span>
+                        </div>
+                    {% endfor %}
+                    <button class="btn btn-primary">提交</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

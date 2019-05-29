@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block con %}
+    <section class="content-header">
+        <h1>
+            班级学习记录
+            <small>Optional description</small>
+        </h1>
+    </section>
+
+    <!-- 批量处理form表单 -->
+    <form action="" method="post">
+        {% csrf_token %}
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <!-- 这个没有为什么，一定要加 -->
+                            {{ formset.management_form }}
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>姓名</th>
+                                    <th>考勤</th>
+                                    <th>成绩</th>
+                                    <th>批语</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for form in formset %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <!--form.id 必须写，不然报：This field is required.-->
+                                        {{ form.id }}
+                                        <!--form.student
+                                        这样写在这里，默认会渲染成下来菜单样式，
+                                        如果不想要，可以写成form.instance.student，其它一样
+                                        -->
+                                        <td>{{ form.instance.student }}</td>
+                                        <td>{{ form.instance.get_record_display }}</td>
+                                        <td>{{ form.score }}</td>
+                                        <td>{{ form.homework_note }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <button class="btn btn-primary" style="vertical-align: 0px;">提交</button>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+    </form>
+
+{% endblock %}

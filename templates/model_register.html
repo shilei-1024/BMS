@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--这两种引入方式，？？？-->
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<body>
+<h3>登录页面</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <form action="" method="post" novalidate>
+                {% csrf_token %}
+                {% for filed in form %}
+                <div class="form-group">
+                    <label for="">{{ filed.label }}</label>
+                    {{ filed }}
+                    <span class="error pull-right"></span>
+                </div>
+                {% endfor %}
+                <input type="button" class="btn btn-primary pull-left reg_btn" value="提交">
+                <span class="error"></span>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(".reg_btn").click(function(){
+        $.ajax({
+            url:"",
+            type:"post",
+            data:{
+                username: $("#id_username").val(),
+                password: $("#id_password").val(),
+                r_password: $("#id_r_password").val(),
+                email: $("#id_email").val(),
+                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val(),
+            },
+            success: function(response) {
+                if (response.username) {
+                    location.href = "/login/"
+                } else {
+                    // 清空原来的错误
+                    // has-error 显示红色边框, bootstrap自带的类属性
+                    $('.error').html('');
+                    $('.form-group').removeClass("has-error");
+
+                    // 展示新的错误
+                    $.each(response.err_msg, function (i, j) {
+                        console.log(i, j);
+                        $("#id_" + i).next().html(j[0]).css("color", "red").parent().addClass("has-error");
+                    })
+                }
+            }
+        })
+    })
+</script>
+</html>
